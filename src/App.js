@@ -3,6 +3,7 @@ import Home from './pages/homepage/Home';
 import Staff from './pages/staffpage/staff';
 import Service from './pages/servicepage/services';
 import Login from './pages/loginpage/login';
+import ServiceDetails from './components/services/servicedetails';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="/staff" element={<Staff />} />
       <Route path="/services" element={<Service />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/service-details/:id" element={<ServiceDetails />} />
     </Routes>
   );
 }
