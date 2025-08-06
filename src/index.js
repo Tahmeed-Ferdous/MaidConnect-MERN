@@ -15,16 +15,3 @@ root.render(
 );
 
 reportWebVitals();
-
-const client = new MongoClient(URL,{
-  serverApi:{
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-client.connect(err => {
-  const userCollection = client.db("maidconnect").collection("users");
-  
-)
