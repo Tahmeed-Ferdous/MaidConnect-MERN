@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const [signUpError, setSignUpError] = useState("");
   const {
     register,
     handleSubmit,
@@ -23,13 +24,38 @@ const Signup = () => {
         btn.disabled = true;
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/signup", {
+                const response = await fetch("http://localhost:3000/signup", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(formData),
-                });
+                })
+                const result = await response.json();
+                if(result.status){
+                    setSignUpError("");
+                    console.log(result);
+                    document.getElementById("signup_form").reset()
+                    btn.innerText = "Register";
+                    btn.disabled = false;
+                }
+                else{
+                    setSignUpError(result.message);
+                    document.getElementById("signup_form").reset()
+                    btn.innerText = "Register";
+                    btn.disabled = false;
+
+                }
+            }
+        
+        catch (error) {
+            fetchData();
+          } 
+        }
+        fetchData();
+    }
+    
+            
     return (
     <div className="min-h-screen bg-white text-black">
       <Navbar />
@@ -103,6 +129,7 @@ const Signup = () => {
           >
             Sign Up
           </button>
+          <p className="my-2 text-rose-900">{signUpError}</p>
 
           {/* Login Redirect */}
           <p className="text-center text-sm mt-6">
