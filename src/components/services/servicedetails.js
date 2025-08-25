@@ -1,40 +1,39 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import cleaningImg from "../../images/cover.jpeg";
-import cleaning1 from "../../images/cleaning1.jpg";
-import cleaning2 from "../../images/cleaning2.jpg";
-import cleaning3 from "../../images/cleaning3.jpg";
 import maid1 from "../../images/maid1.jpg";
 import maid2 from "../../images/maid2.jpg";
 import maid3 from "../../images/maid3.jpg";
 import StaffMiniCard from "../staffs/staffminicard";
+import useAuth from "../../hooks/useAuth";
+import Navbar from "../Navbar";
 
 const ServiceDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams(); 
+  const {services} = useAuth();
 
-  const services = [
-    {
-      _id: "1",
-      name: "House Cleaning",
-      description: "Comprehensive house cleaning services to keep your home spotless and hygienic.",
-      category: "House Cleaning",
-      image: cleaningImg,
-    },
-    {
-      _id: "2",
-      name: "Bathroom Deep Clean",
-      description: "Intensive bathroom cleaning and sanitization for tiles, toilets, and sinks.",
-      category: "Bathroom Cleaning",
-      image: cleaning1,
-    },
-    {
-      _id: "3",
-      name: "Daily Cooking",
-      description: "Home-style daily cooking service tailored to your preferences.",
-      category: "Cooking",
-      image: cleaning2,
-    },
-  ];
+  // const services = [
+  //   {
+  //     _id: "1",
+  //     name: "House Cleaning",
+  //     description: "Comprehensive house cleaning services to keep your home spotless and hygienic.",
+  //     category: "House Cleaning",
+  //     image: cleaningImg,
+  //   },
+  //   {
+  //     _id: "2",
+  //     name: "Bathroom Deep Clean",
+  //     description: "Intensive bathroom cleaning and sanitization for tiles, toilets, and sinks.",
+  //     category: "Bathroom Cleaning",
+  //     image: cleaning1,
+  //   },
+  //   {
+  //     _id: "3",
+  //     name: "Daily Cooking",
+  //     description: "Home-style daily cooking service tailored to your preferences.",
+  //     category: "Cooking",
+  //     image: cleaning2,
+  //   },
+  // ];
 
 const staffs = [
     {
@@ -84,6 +83,7 @@ const staffs = [
 
   return (
     <div className="px-4">
+      <Navbar />
       <h1 className="text-2xl font-bold text-center my-6">{service.name}</h1>
       <img
         src={service.image}
