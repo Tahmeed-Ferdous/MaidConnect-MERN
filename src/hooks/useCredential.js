@@ -7,6 +7,14 @@ const useCredential = () => {
     const [categories, setCategories] = useState([]);
     const [slots, setSlots] = useState([]);
     const [services, setServices] = useState([]);
+    const [staffs, setStaffs] = useState([]);
+
+    // ----------------------------------------
+    const [service, setService] = useState({});
+    const [staff, setStaff] = useState({});
+    const [slot, setSlot] = useState({});
+    const [bookingsByEmail, setBookingsByEmail] = useState([]);
+
 
     // Persist Login
     useEffect(() => {
@@ -75,7 +83,7 @@ const useCredential = () => {
                 const response = await fetch("http://localhost:5000/slots"); // Correct endpoint for list
                 const result = await response.json();
                 if (result.status) {
-                    setSlots(result.slots);
+                    setSlots(result.slot);
                 } else {
                     console.log(result);
                 }
@@ -104,7 +112,42 @@ const useCredential = () => {
         fetchData();
     }, []);
 
-    return { user, setUser, users, setUsers, categories, setCategories, slots, setSlots, services, setServices, logout };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/staffs");
+                const result = await response.json();
+                if (result.status) {
+                    setStaffs(result.staffs);
+                } else {
+                    console.log(result);
+                }
+            } catch (err) {
+                console.log("Error fetching services:", err);
+            }
+        };
+        fetchData();
+    }, []);
+
+// Fetch payments
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/payments/${user.email}`);
+                const result = await response.json();
+                if (result.status) {
+                    setBookingsByEmail(result.payments);
+                } else {
+                    console.log(result);
+                }
+            } catch (err) {
+                console.log("Error fetching Bookings:", err);
+            }
+        };
+        user.email && fetchData();
+    }, [user.email]);
+
+    return { slot, setSlot, staff, setStaff, service, setService, user, setUser, users, setUsers, categories, setCategories, slots, setSlots, services, setServices, staffs, setStaffs, logout, bookingsByEmail };
 };
 
 export default useCredential;

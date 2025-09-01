@@ -1,53 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import StaffAbout from "../../components/staffs/staffabout";
 import StaffRating from "../../components/staffs/staffrating";
-import maid1 from "../../images/maid1.jpg";
-import maid2 from "../../images/maid2.jpg";
-import maid3 from "../../images/maid3.jpg";
+import useAuth from "../../hooks/useAuth";
 
 const StaffDetails = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("about");
+  const {staff, setStaff } = useAuth();
 
-  const staffs = [
-    {
-      _id: "123",
-      name: "John Doe",
-      role: "Cleaner",
-      location: "Mumbai",
-      bio: "Expert in deep cleaning and sanitization with attention to detail.",
-      experience: "5 years",
-      image: maid1,
-      services: ["House Cleaning", "Bathroom Deep Clean"],
-      rate: "$10",
-    },
-    {
-      _id: "234",
-      name: "Jane Smith",
-      role: "Cook",
-      location: "Delhi",
-      bio: "Specializes in home-style cooking and meal planning.",
-      experience: "7 years",
-      image: maid2,
-      services: ["Daily Cooking"],
-      rate: "$8",
-    },
-    {
-      _id: "345",
-      name: "Alice Johnson",
-      role: "Housekeeper",
-      location: "Bangalore",
-      bio: "Skilled in housekeeping and organizing homes efficiently.",
-      experience: "4 years",
-      image: maid3,
-      services: ["House Cleaning"],
-      rate: "$5",
-    },
-  ];
-
-  const staff = staffs.find((s) => s._id === id);
+  // const staff = staffs.find((s) => s._id === id);
+  useEffect(() => {
+    if (!staff.name) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`http://localhost:5000/staff/${id}`);
+          const result = await response.json();
+          if (result.status) {
+            setStaff(result.staff);
+          }
+          else {
+            console.log(result);
+          }
+        } catch (err) {
+          fetchData();
+        }
+      }
+      fetchData();
+    }
+  }, [id, setStaff, staff.name]);
 
   if (!staff) return <div className="text-center mt-10 text-red-600">Staff not found</div>;
 
@@ -66,32 +48,30 @@ const StaffDetails = () => {
         <p className="text-gray-600">{staff.role} &middot; {staff.experience}</p>
       </div>
 
-        <div className="flex justify-center mt-6 space-x-4">
-          <button
-            onClick={() => setActiveTab("about")}
-            className={`px-6 py-2 rounded-md font-semibold ${
-            activeTab === "about"
+      <div className="flex justify-center mt-6 space-x-4">
+        <button
+          onClick={() => setActiveTab("about")}
+          className={`px-6 py-2 rounded-md font-semibold ${activeTab === "about"
               ? "bg-black text-white"
               : "bg-gray-200 text-gray-800 hover:bg-gray-300"
             }`}
-          >
-            About
-          </button>
-          <button
-            onClick={() => setActiveTab("ratings")}
-            className={`px-6 py-2 rounded-md font-semibold ${
-            activeTab === "ratings"
+        >
+          About
+        </button>
+        <button
+          onClick={() => setActiveTab("ratings")}
+          className={`px-6 py-2 rounded-md font-semibold ${activeTab === "ratings"
               ? "bg-black text-white"
               : "bg-gray-200 text-gray-800 hover:bg-gray-300"
             }`}
-          >
-            Ratings
-          </button>
-        </div>
+        >
+          Ratings
+        </button>
+      </div>
 
-        {/* Content */}
+      {/* Content */}
       <div className="mt-6 max-w-2xl mx-auto px-4">
-        {activeTab === "about" ? <StaffAbout staff={staff} /> : <StaffRating />}
+        {staff.name && activeTab === "about" ? <StaffAbout staff={staff} /> : <StaffRating />}
       </div>
     </div>
   );

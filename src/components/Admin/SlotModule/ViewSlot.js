@@ -1,34 +1,11 @@
-import React, { useEffect } from "react";
-import useAuth from "../../../hooks/useAuth";
+import React from "react";
+import useAuth from "../../../hooks/useAuth"; // Importing useAuth to access the slots from the AuthContext
 import { toast } from "react-toastify";
 
 const ViewSlot = () => {
-    const { slots = [], setSlots } = useAuth(); // Ensure slots defaults to an empty array
+    const { slots, setSlots } = useAuth(); // Accessing slots and setSlots from useAuth
 
-    useEffect(() => {
-        const fetchSlots = async () => {
-            try {
-                const response = await fetch("http://localhost:5000/slots"); // Fetch the slots
-                const result = await response.json();
-                
-                console.log("API Response: ", result); // Log API response to check if the data is coming back correctly
-
-                if (result.status) {
-                    // Adjust for response structure: result.slot instead of result.slots
-                    console.log("Fetched slots: ", result.slot); // Debugging: Log slots array
-                    setSlots(result.slot); // Set the slots state correctly with 'slot' instead of 'slots'
-                } else {
-                    toast.error("Failed to fetch slots");
-                }
-            } catch (err) {
-                console.log("Error fetching slots:", err); // Log fetch errors
-                toast.error("Error fetching slots. Please try again.");
-            }
-        };
-
-        fetchSlots(); // Call the fetch function when the component mounts
-    }, [setSlots]); // Only run this effect once on mount
-
+    // Handle deleting a slot
     const handleDelete = async (id) => {
         try {
             const response = await fetch(`http://localhost:5000/slot/${id}`, {
@@ -37,30 +14,15 @@ const ViewSlot = () => {
             const result = await response.json();
             if (result.status) {
                 toast.success(`${result.message}`);
-                // After deletion, fetch updated slots
-                const fetchData = async () => {
-                    try {
-                        const response = await fetch("http://localhost:5000/slots");
-                        const result = await response.json();
-                        if (result.status) {
-                            setSlots(result.slot); // Update with 'slot' key instead of 'slots'
-                        } else {
-                            console.log("Error fetching updated slots", result);
-                        }
-                    } catch (err) {
-                        console.log("Error fetching updated slots:", err);
-                    }
-                };
-                fetchData();
+                // After deletion, update slots state by re-fetching
+                const updatedSlots = await fetch("http://localhost:5000/slots").then(res => res.json());
+                setSlots(updatedSlots.slot); // Update with new slots after deletion
             }
         } catch (err) {
-            console.log("Error deleting slot: ", err);
+            console.log("Error deleting slot:", err);
             toast.error("Failed to delete the slot. Please try again.");
         }
     };
-
-    // Debugging: Log the slots before rendering the table
-    console.log("Current slots state: ", slots);
 
     return (
         <div className="overflow-x-auto my-5 p-2">
