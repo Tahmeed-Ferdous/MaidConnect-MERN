@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import PaymentsHistory from "../../components/Dashboard/PaymentsHistory";
+import AppointmentsHistory from "../../components/Dashboard/AppointmentsHistory";
 // import AppointmentsHistory from "../../components/Dashboard/AppointmentsHistory";
 
 const Dashboard = () => {
@@ -38,7 +39,7 @@ const Dashboard = () => {
             
             <div>
                 <h2>Appointments History</h2>
-                {/* <AppointmentsHistory /> */}
+                <AppointmentsHistory />
             </div>
         </div>
     );

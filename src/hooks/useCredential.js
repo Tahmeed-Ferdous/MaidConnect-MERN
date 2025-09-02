@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const useCredential = () => {
-    const id = localStorage.getItem('uid');
+    const id = localStorage.getItem('uId');
     const [user, setUser] = useState({});
     const [users, setUsers] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -76,7 +76,7 @@ const useCredential = () => {
         fetchData();
     }, []);
 
-    // Fetch slots (list of slots)
+    // Fetch slots
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -94,7 +94,7 @@ const useCredential = () => {
         fetchData();
     }, []);
 
-    // Fetch services (aligning with CreateService)
+    // Fetch services
     useEffect(() => {
         const fetchData = async () => {
             try {

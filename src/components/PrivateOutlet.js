@@ -7,7 +7,7 @@ const PrivateOutlet = () => {
     const location = useLocation();
 
     // Check if the user exists and is authenticated
-    return user ? <Outlet /> : <Navigate to='/login' state={{ from: location }} replace />;
+    return user.email ? <Outlet /> : <Navigate to='/login' state={{ from: location }} replace />;
 };
 
 export default PrivateOutlet;
