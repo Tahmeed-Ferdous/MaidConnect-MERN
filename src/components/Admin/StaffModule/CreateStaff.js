@@ -170,16 +170,22 @@ const CreateStaff = () => {
           multiple
         >
           <option value="">Select Service</option>
-          {services.map((service) => (
-            <option key={service._id} value={service.name}>
-              {service.name}
-            </option>
-          ))}
+          {Array.from(new Set(services.map((service) => service.name))) // Remove duplicates
+            .map((uniqueServiceName) => {
+              // Find the full service object based on the name (just for the display in the dropdown)
+              const service = services.find((s) => s.name === uniqueServiceName);
+              return (
+                <option key={service._id} value={service.name}>
+                  {service.name}
+                </option>
+              );
+            })}
         </select>
         {errors.service && (
           <span className="text-red-500 text-sm">{errors.service.message}</span>
         )}
       </div>
+
 
       {/* Rate */}
       <div className="mb-4">

@@ -5,11 +5,6 @@ const AppointmentsHistory = () => {
   const { bookingsByEmail } = useAuth(); // Destructure bookingsByEmail properly
   const bookings = Array.isArray(bookingsByEmail) ? bookingsByEmail : [];
 
-  // Function to format rate as a dollar amount
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
-  };
-
   return (
     <div className="my-5 p-2 border rounded-lg shadow-lg bg-white">
       <div className="overflow-y-auto max-h-80">
