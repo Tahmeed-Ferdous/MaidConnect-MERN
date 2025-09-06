@@ -14,6 +14,7 @@ const useCredential = () => {
     const [staff, setStaff] = useState({});
     const [slot, setSlot] = useState({});
     const [bookingsByEmail, setBookingsByEmail] = useState([]);
+    const [bookings, setBookings] = useState([]);
 
 
     // Persist Login
@@ -129,7 +130,25 @@ const useCredential = () => {
         fetchData();
     }, []);
 
-// Fetch payments
+    // Fetch payments by admin
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/bookings`);
+                const result = await response.json();
+                if (result.status) {
+                    setBookings(result.bookings);
+                } else {
+                    console.log(result);
+                }
+            } catch (err) {
+                console.log("Error fetching Bookings:", err);
+            }
+        };
+        user.role === "admin" && fetchData();
+    }, [user.role, user.email]);
+
+    // Fetch payments by user
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -144,10 +163,10 @@ const useCredential = () => {
                 console.log("Error fetching Bookings:", err);
             }
         };
-        user.email && fetchData();
-    }, [user.email]);
+        user.role === "user" && fetchData();
+    }, [user.role, user.email]);
 
-    return { slot, setSlot, staff, setStaff, service, setService, user, setUser, users, setUsers, categories, setCategories, slots, setSlots, services, setServices, staffs, setStaffs, logout, bookingsByEmail };
+    return { slot, setSlot, staff, setStaff, service, setService, user, setUser, users, setUsers, categories, setCategories, slots, setSlots, services, setServices, staffs, setStaffs, logout, bookingsByEmail, bookings };
 };
 
 export default useCredential;

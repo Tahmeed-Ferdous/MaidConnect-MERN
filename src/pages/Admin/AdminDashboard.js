@@ -14,6 +14,10 @@ import ViewSlot from "../../components/Admin/SlotModule/ViewSlot";
 import CreateStaff from "../../components/Admin/StaffModule/CreateStaff";
 import ViewStaff from "../../components/Admin/StaffModule/ViewStuff";
 
+// ⬇️ New imports
+import ViewAllPayments from "../../components/Admin/PaymentsModule/ViewAllPayments";
+import ViewAllAppointments from "../../components/Admin/AppointmentsModule/ViewAllAppointments";
+
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -49,7 +53,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex space-x-8 border-b border-gray-200 mb-6">
+        <div className="flex flex-wrap gap-6 border-b border-gray-200 mb-6">
           <button
             className={`text-lg font-medium ${activeTab === "user" ? "text-black border-b-2 border-black" : "text-gray-500"}`}
             onClick={() => setActiveTab("user")}
@@ -79,6 +83,13 @@ const AdminDashboard = () => {
             onClick={() => setActiveTab("staff")}
           >
             Staff
+          </button>
+
+          <button
+            className={`text-lg font-medium ${activeTab === "payappt" ? "text-black border-b-2 border-black" : "text-gray-500"}`}
+            onClick={() => setActiveTab("payappt")}
+          >
+            Payments
           </button>
         </div>
 
@@ -188,6 +199,29 @@ const AdminDashboard = () => {
                   <div className="p-6">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">Manage Staff</h3>
                     <ViewStaff />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* ⬇️ New Tab Content */}
+          {activeTab === "payappt" && (
+            <>
+              <div className="flex space-x-8">
+                {/* View All Payments */}
+                <div className="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                  <div className="p-6">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">All Payments</h3>
+                    <ViewAllPayments />
+                  </div>
+                </div>
+
+                {/* View All Appointments */}
+                <div className="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                  <div className="p-6">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">All Appointments</h3>
+                    <ViewAllAppointments />
                   </div>
                 </div>
               </div>
